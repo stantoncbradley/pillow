@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160106035943) do
+ActiveRecord::Schema.define(version: 20160106193708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,10 +23,17 @@ ActiveRecord::Schema.define(version: 20160106035943) do
     t.integer "price"
   end
 
+  add_index "listings", ["price"], name: "index_listings_on_price", using: :btree
+  add_index "listings", ["property_id", "date"], name: "index_listings_on_property_id_and_date", unique: true, using: :btree
+
   create_table "properties", force: :cascade do |t|
     t.integer "zipcode",     null: false
     t.integer "bedrooms"
     t.integer "accomodates", null: false
   end
 
+  add_index "properties", ["bedrooms"], name: "index_properties_on_bedrooms", using: :btree
+  add_index "properties", ["zipcode"], name: "index_properties_on_zipcode", using: :btree
+
+  add_foreign_key "listings", "properties"
 end

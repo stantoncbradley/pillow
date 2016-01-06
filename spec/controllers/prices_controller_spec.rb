@@ -19,6 +19,15 @@ describe PricesController do
         expect(json['price']).to eql(793.7287953571977)
       end
 
+      it 'returns different price for different zipcode' do
+        @params[:bedrooms] = '4'
+        @params[:zipcode] = '94110'
+        post(:create, @params)
+        expect(response.status).to eql 200
+        json = JSON.parse(response.body)
+        expect(json['price']).to eql(311.74897974463806)
+      end
+
       it 'returns null if zipcode does not exist' do
         @params[:bedrooms] = '4'
         @params[:zipcode] = '63701'
